@@ -1,9 +1,12 @@
 package com.flow.admin.main.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.flow.admin.main.dto.controller.dashboard.DashboardResponseDto;
+import com.flow.admin.main.service.domain.dashboard.DashboardService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,9 +15,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DashBoardController {
 
-	@PostMapping
-	public ResponseEntity<Void> inquiry() {
-		return null;
+	private final DashboardService dashboardService;
+
+	@GetMapping
+	public ResponseEntity<DashboardResponseDto> views() {
+		return ResponseEntity.ok().body(dashboardService.getDashboard());
 	}
 
 }
