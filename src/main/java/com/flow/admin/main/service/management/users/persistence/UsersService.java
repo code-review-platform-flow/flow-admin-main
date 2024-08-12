@@ -1,5 +1,8 @@
 package com.flow.admin.main.service.management.users.persistence;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +33,11 @@ public class UsersService {
 	public UsersDto findByEmail(String email) {
 		return usersMapper.toDto(usersRepository.findByEmail(email).orElseThrow(
 			() -> new EntityNotFoundException("User not found with email : " + email)));
+	}
+
+	@Transactional(readOnly = true)
+	public List<UsersDto> findAllByPageable(Pageable pageable) {
+		return usersMapper.toListDto(usersRepository.findAllByPageable(pageable));
 	}
 
 	@Transactional(readOnly = true)

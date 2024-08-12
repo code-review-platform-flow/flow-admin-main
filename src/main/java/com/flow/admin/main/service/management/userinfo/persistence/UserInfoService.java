@@ -1,5 +1,7 @@
 package com.flow.admin.main.service.management.userinfo.persistence;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +12,9 @@ import com.flow.admin.main.repository.UserInfoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserInfoService {
@@ -29,6 +33,11 @@ public class UserInfoService {
 		return userInfoMapper.toDto(userInfoRepository.findByUserId(userId).orElseThrow(
 			() -> new EntityNotFoundException("UserInfo not found with userI : " + userId)
 		));
+	}
+
+	@Transactional(readOnly = true)
+	public List<UserInfoDto> findAll() {
+		return userInfoMapper.toListDto(userInfoRepository.findAll());
 	}
 
 }

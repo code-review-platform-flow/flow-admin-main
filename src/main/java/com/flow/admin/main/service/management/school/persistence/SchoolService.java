@@ -22,4 +22,10 @@ public class SchoolService {
 		return schoolMapper.toDto(schoolRepository.findBySchoolName(schoolName)
 			.orElseThrow(() -> new EntityNotFoundException("School not found with schoolName : " + schoolName)));
 	}
+
+	@Transactional(readOnly = true)
+	public SchoolDto findBySchoolId(Long schoolId) {
+		return schoolMapper.toDto(schoolRepository.findBySchoolId(schoolId)
+			.orElseThrow(() -> new EntityNotFoundException("School not found with schoolId : " + schoolId)));
+	}
 }
