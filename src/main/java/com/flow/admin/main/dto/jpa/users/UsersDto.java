@@ -1,5 +1,7 @@
 package com.flow.admin.main.dto.jpa.users;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,8 +14,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class UsersDto {
-    private Long userId;
-    private String email;
-    private String password;
-    private int version;
+	private Long userId;
+	private String email;
+	private String password;
+	private LocalDateTime createDate;
+	private LocalDateTime modifyDate;
+	private Boolean useYn;
+	private int version;
 }

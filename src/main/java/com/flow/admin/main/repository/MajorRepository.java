@@ -12,4 +12,7 @@ public interface MajorRepository extends JpaRepository<MajorEntity, Long> {
 	@Query("SELECT m FROM MajorEntity m WHERE m.majorName = :majorName AND m.useYn = true")
 	Optional<MajorEntity> findByMajorName(@Param("majorName") String majorName);
 
+	@Query("SELECT m FROM MajorEntity m WHERE m.majorId = :majorId")
+	Optional<MajorEntity> findByMajorId(@Param("majorId") Long majorId);
+
 }

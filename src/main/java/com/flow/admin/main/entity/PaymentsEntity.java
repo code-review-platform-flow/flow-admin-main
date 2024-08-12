@@ -6,33 +6,42 @@ import com.flow.admin.main.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "categories")
+@Table(name = "payments")
 @Where(clause = "use_yn = true")
-public class CategoriesEntity extends BaseEntity {
+public class PaymentsEntity extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "category_id")
-	private Long categoryId;
+	@Column(name = "payment_id")
+	private Long paymentId;
 
-	@Column(name = "category_name")
-	private String categoryName;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id", nullable = false)
+	private OrdersEntity order;
 
-	@Version
-	private int version;
+	@Column(name = "payment_key", nullable = false, length = 255)
+	private String paymentKey;
+
+	@Column(name = "status", nullable = false, length = 20)
+	private String status;
+
 }
