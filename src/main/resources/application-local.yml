@@ -1,0 +1,14 @@
+spring:
+  devtools:
+    restart:
+      enabled: true
+
+  datasource:
+    url: jdbc:postgresql://34.64.209.71:5432/flow-postgresql-dev
+    username: flow-admin-dev
+    password: flow-dev
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none # Hibernate DDL (none, validate, update, create-drop)
+    show-sql: true
