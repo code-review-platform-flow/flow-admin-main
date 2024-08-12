@@ -10,12 +10,3 @@ spring:
     hibernate:
       ddl-auto: none # Hibernate DDL (none, validate, update, create-drop)
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-  jwt:
-    secret: ${JWT_SECRET}
-    access:
-      expiration: ${ACCESS_EXPIRATION}
-    refresh:
-      expiration: ${REFRESH_EXPIRATION}
