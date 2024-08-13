@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserResponseDto {
 
-	private List<DataDto> data;
+	private List<ItemsDto> items;
 	private PageDto page;
 
 	@Getter
@@ -24,7 +24,7 @@ public class UserResponseDto {
 	@EqualsAndHashCode
 	@AllArgsConstructor
 	@NoArgsConstructor
-	public static class DataDto {
+	public static class ItemsDto {
 		private Long userId;
 		private String email;
 		private String userName;
