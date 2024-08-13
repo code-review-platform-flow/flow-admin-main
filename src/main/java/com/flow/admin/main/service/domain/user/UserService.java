@@ -65,7 +65,14 @@ public class UserService {
 			.filter(Objects::nonNull)
 			.toList();
 
-		return UserResponseDto.builder().data(responseDataDtoList).page(pageable).build();
+		UserResponseDto.PageDto pageDto = UserResponseDto.PageDto.builder()
+			.currentPage(pageable.getPageNumber() + 1)
+			.pageSize(pageable.getPageSize())
+			.totalPage((responseDataDtoList.size() / pageable.getPageSize()) + 1)
+			.totalCount(responseDataDtoList.size())
+			.build();
+
+		return UserResponseDto.builder().data(responseDataDtoList).page(pageDto).build();
 	}
 
 	private String fetchSchoolName(Long schoolId) {
