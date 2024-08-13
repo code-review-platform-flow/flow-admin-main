@@ -33,7 +33,7 @@ public class UserService {
 	private final SchoolService schoolService;
 
 	public UserResponseDto getUser(Pageable pageable) {
-		List<UsersDto> usersDtoList = usersService.findAllByPageable(pageable);
+		List<UsersDto> usersDtoList = usersService.findAll();
 
 		Map<Long, UserInfoDto> userInfoMap = userInfoService.findAll()
 			.stream()
@@ -65,14 +65,19 @@ public class UserService {
 			.filter(Objects::nonNull)
 			.toList();
 
+		int start = (int)pageable.getOffset();
+		int end = Math.min((start + pageable.getPageSize()), responseDataDtoList.size());
+
+		List<UserResponseDto.DataDto> paginatedList = responseDataDtoList.subList(start, end);
+
 		UserResponseDto.PageDto pageDto = UserResponseDto.PageDto.builder()
 			.currentPage(pageable.getPageNumber() + 1)
 			.pageSize(pageable.getPageSize())
-			.totalPage((responseDataDtoList.size() / pageable.getPageSize()) + 1)
+			.totalPage((paginatedList.size() + pageable.getPageSize() - 1) / pageable.getPageSize())
 			.totalCount(responseDataDtoList.size())
 			.build();
 
-		return UserResponseDto.builder().data(responseDataDtoList).page(pageDto).build();
+		return UserResponseDto.builder().data(paginatedList).page(pageDto).build();
 	}
 
 	private String fetchSchoolName(Long schoolId) {
