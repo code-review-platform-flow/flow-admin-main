@@ -55,7 +55,7 @@ public class UserService {
 				if (matchedUserInfo == null) {
 					return null;
 				}
-				
+
 				boolean matches = matchesSearchCriteria(userRequestDto, usersDto, matchedUserInfo);
 				if (!matches) {
 					return null;
@@ -96,6 +96,14 @@ public class UserService {
 	private boolean matchesSearchCriteria(UserRequestDto userRequestDto, UsersDto usersDto, UserInfoDto userInfoDto) {
 		String searchType = userRequestDto.getSearchType();
 		String searchText = userRequestDto.getSearchText();
+
+		if ("COMPLETED".equalsIgnoreCase(userRequestDto.getStatus()) && !usersDto.getUseYn()) {
+			return false;
+		}
+
+		if ("WITHDRAWAL".equalsIgnoreCase(userRequestDto.getStatus()) && usersDto.getUseYn()) {
+			return false;
+		}
 
 		if (searchText == null || searchText.isEmpty()) {
 			return true;
