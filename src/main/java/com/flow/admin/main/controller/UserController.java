@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flow.admin.main.dto.controller.user.UserRequestDto;
-import com.flow.admin.main.dto.controller.user.UserResponseDto;
+import com.flow.admin.main.dto.controller.user.UserListRequestDto;
+import com.flow.admin.main.dto.controller.user.UserListResponseDto;
 import com.flow.admin.main.service.domain.user.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping
-	public ResponseEntity<UserResponseDto> views(Pageable pageable,
+	public ResponseEntity<UserListResponseDto> views(Pageable pageable,
 		@RequestParam(required = false) String searchDateType,
 		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
 		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
@@ -39,7 +39,7 @@ public class UserController {
 		LocalDateTime startDateTime = startDate != null ? startDate.atStartOfDay() : null;
 		LocalDateTime endDateTime = endDate != null ? endDate.atTime(LocalTime.MAX) : null;
 
-		UserRequestDto userRequestDto = UserRequestDto.builder()
+		UserListRequestDto userListRequestDto = UserListRequestDto.builder()
 			.searchDateType(searchDateType)
 			.startDate(startDateTime)
 			.endDate(endDateTime)
@@ -48,7 +48,7 @@ public class UserController {
 			.searchText(searchText)
 			.build();
 
-		return ResponseEntity.ok().body(userService.getUser(pageable, userRequestDto));
+		return ResponseEntity.ok().body(userService.getUsers(pageable, userListRequestDto));
 	}
 
 }

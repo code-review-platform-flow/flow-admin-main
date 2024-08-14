@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequestDto {
+public class UserListRequestDto {
 	private String searchDateType;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;

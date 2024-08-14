@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseDto {
+public class UserListResponseDto {
 
 	private List<ItemsDto> items;
 	private PageDto page;

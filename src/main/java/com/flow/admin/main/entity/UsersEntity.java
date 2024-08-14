@@ -1,7 +1,5 @@
 package com.flow.admin.main.entity;
 
-import org.hibernate.annotations.Where;
-
 import com.flow.admin.main.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -24,7 +22,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Table(name = "users")
-@Where(clause = "use_yn = true")
 public class UsersEntity extends BaseEntity {
 
 	@Id
