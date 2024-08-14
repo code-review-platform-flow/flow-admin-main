@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.flow.admin.main.dto.controller.user.UserRequestDto;
+import com.flow.admin.main.dto.controller.user.UserListRequestDto;
 import com.flow.admin.main.dto.jpa.users.UsersDto;
 import com.flow.admin.main.entity.UsersEntity;
 import com.flow.admin.main.mapper.UsersMapper;
@@ -37,11 +37,11 @@ public class UsersService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<UsersDto> findAllWithSearch(UserRequestDto userRequestDto) {
+	public List<UsersDto> findAllWithSearch(UserListRequestDto userListRequestDto) {
 		List<UsersEntity> usersEntities = usersRepository.findAllWithSearch(
-			userRequestDto.getSearchDateType(),
-			userRequestDto.getStartDate(),
-			userRequestDto.getEndDate()
+			userListRequestDto.getSearchDateType(),
+			userListRequestDto.getStartDate(),
+			userListRequestDto.getEndDate()
 		);
 		return usersMapper.toListDto(usersEntities);
 	}

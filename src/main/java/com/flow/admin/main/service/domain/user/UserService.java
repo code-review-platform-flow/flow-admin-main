@@ -9,8 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.flow.admin.main.dto.controller.user.UserRequestDto;
-import com.flow.admin.main.dto.controller.user.UserResponseDto;
+import com.flow.admin.main.dto.controller.user.UserListRequestDto;
+import com.flow.admin.main.dto.controller.user.UserListResponseDto;
 import com.flow.admin.main.dto.jpa.major.MajorDto;
 import com.flow.admin.main.dto.jpa.school.SchoolDto;
 import com.flow.admin.main.dto.jpa.userinfo.UserInfoDto;
@@ -33,12 +33,12 @@ public class UserService {
 	private final MajorService majorService;
 	private final SchoolService schoolService;
 
-	public UserResponseDto getUser(Pageable pageable, UserRequestDto userRequestDto) {
+	public UserListResponseDto getUsers(Pageable pageable, UserListRequestDto userListRequestDto) {
 
 		Pageable adjustedPageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(),
 			pageable.getSort());
 
-		List<UsersDto> usersDtoList = usersService.findAllWithSearch(userRequestDto);
+		List<UsersDto> usersDtoList = usersService.findAllWithSearch(userListRequestDto);
 
 		Map<Long, UserInfoDto> userInfoMap = userInfoService.findAll()
 			.stream()
@@ -48,7 +48,7 @@ public class UserService {
 				(existing, replacement) -> replacement
 			));
 
-		List<UserResponseDto.ItemsDto> responseItemsDtoList = usersDtoList.stream()
+		List<UserListResponseDto.ItemsDto> responseItemsDtoList = usersDtoList.stream()
 			.map(usersDto -> {
 				UserInfoDto matchedUserInfo = userInfoMap.get(usersDto.getUserId());
 
@@ -56,12 +56,12 @@ public class UserService {
 					return null;
 				}
 
-				boolean matches = matchesSearchCriteria(userRequestDto, usersDto, matchedUserInfo);
+				boolean matches = matchesSearchCriteria(userListRequestDto, usersDto, matchedUserInfo);
 				if (!matches) {
 					return null;
 				}
 
-				return UserResponseDto.ItemsDto.builder()
+				return UserListResponseDto.ItemsDto.builder()
 					.userId(usersDto.getUserId())
 					.userName(matchedUserInfo.getUserName())
 					.email(usersDto.getEmail())
@@ -80,9 +80,9 @@ public class UserService {
 		int start = (int)adjustedPageable.getOffset();
 		int end = Math.min((start + adjustedPageable.getPageSize()), responseItemsDtoList.size());
 
-		List<UserResponseDto.ItemsDto> paginatedList = responseItemsDtoList.subList(start, end);
+		List<UserListResponseDto.ItemsDto> paginatedList = responseItemsDtoList.subList(start, end);
 
-		UserResponseDto.PageDto pageDto = UserResponseDto.PageDto.builder()
+		UserListResponseDto.PageDto pageDto = UserListResponseDto.PageDto.builder()
 			.currentPage(adjustedPageable.getPageNumber() + 1)
 			.pageSize(adjustedPageable.getPageSize())
 			.totalPage(
@@ -90,18 +90,19 @@ public class UserService {
 			.totalCount(responseItemsDtoList.size())
 			.build();
 
-		return UserResponseDto.builder().items(paginatedList).page(pageDto).build();
+		return UserListResponseDto.builder().items(paginatedList).page(pageDto).build();
 	}
 
-	private boolean matchesSearchCriteria(UserRequestDto userRequestDto, UsersDto usersDto, UserInfoDto userInfoDto) {
-		String searchType = userRequestDto.getSearchType();
-		String searchText = userRequestDto.getSearchText();
+	private boolean matchesSearchCriteria(UserListRequestDto userListRequestDto, UsersDto usersDto,
+		UserInfoDto userInfoDto) {
+		String searchType = userListRequestDto.getSearchType();
+		String searchText = userListRequestDto.getSearchText();
 
-		if ("COMPLETED".equalsIgnoreCase(userRequestDto.getStatus()) && !usersDto.getUseYn()) {
+		if ("COMPLETED".equalsIgnoreCase(userListRequestDto.getStatus()) && !usersDto.getUseYn()) {
 			return false;
 		}
 
-		if ("WITHDRAWAL".equalsIgnoreCase(userRequestDto.getStatus()) && usersDto.getUseYn()) {
+		if ("WITHDRAWAL".equalsIgnoreCase(userListRequestDto.getStatus()) && usersDto.getUseYn()) {
 			return false;
 		}
 
